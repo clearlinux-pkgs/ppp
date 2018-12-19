@@ -6,7 +6,7 @@
 #
 Name     : ppp
 Version  : 2.4.7
-Release  : 1
+Release  : 4
 URL      : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz
 Source0  : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz
 Source99 : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz.asc
@@ -14,7 +14,9 @@ Summary  : No detailed summary available
 Group    : Development/Tools
 License  : LGPL-2.1
 Requires: ppp-bin = %{version}-%{release}
+Requires: ppp-lib = %{version}-%{release}
 Requires: ppp-license = %{version}-%{release}
+Requires: ppp-man = %{version}-%{release}
 Patch1: triple-rot13.patch
 
 %description
@@ -25,9 +27,30 @@ serial lines.
 Summary: bin components for the ppp package.
 Group: Binaries
 Requires: ppp-license = %{version}-%{release}
+Requires: ppp-man = %{version}-%{release}
 
 %description bin
 bin components for the ppp package.
+
+
+%package dev
+Summary: dev components for the ppp package.
+Group: Development
+Requires: ppp-lib = %{version}-%{release}
+Requires: ppp-bin = %{version}-%{release}
+Provides: ppp-devel = %{version}-%{release}
+
+%description dev
+dev components for the ppp package.
+
+
+%package lib
+Summary: lib components for the ppp package.
+Group: Libraries
+Requires: ppp-license = %{version}-%{release}
+
+%description lib
+lib components for the ppp package.
 
 
 %package license
@@ -36,6 +59,14 @@ Group: Default
 
 %description license
 license components for the ppp package.
+
+
+%package man
+Summary: man components for the ppp package.
+Group: Default
+
+%description man
+man components for the ppp package.
 
 
 %prep
@@ -47,58 +78,19 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1545240830
+export SOURCE_DATE_EPOCH=1545244628
 %configure --disable-static
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1545240830
+export SOURCE_DATE_EPOCH=1545244628
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/ppp
 cp pppd/plugins/pppoatm/COPYING %{buildroot}/usr/share/package-licenses/ppp/pppd_plugins_pppoatm_COPYING
-%make_install
+%make_install DESTDIR=%{buildroot}/usr
 
 %files
 %defattr(-,root,root,-)
-/include/pppd/ccp.h
-/include/pppd/chap-new.h
-/include/pppd/chap_ms.h
-/include/pppd/eap.h
-/include/pppd/ecp.h
-/include/pppd/eui64.h
-/include/pppd/fsm.h
-/include/pppd/ipcp.h
-/include/pppd/ipv6cp.h
-/include/pppd/ipxcp.h
-/include/pppd/lcp.h
-/include/pppd/magic.h
-/include/pppd/md4.h
-/include/pppd/md5.h
-/include/pppd/patchlevel.h
-/include/pppd/pathnames.h
-/include/pppd/pppcrypt.h
-/include/pppd/pppd.h
-/include/pppd/session.h
-/include/pppd/sha1.h
-/include/pppd/spinlock.h
-/include/pppd/tdb.h
-/include/pppd/upap.h
-/lib/pppd/2.4.7/minconn.so
-/lib/pppd/2.4.7/openl2tp.so
-/lib/pppd/2.4.7/passprompt.so
-/lib/pppd/2.4.7/passwordfd.so
-/lib/pppd/2.4.7/pppoatm.so
-/lib/pppd/2.4.7/pppol2tp.so
-/lib/pppd/2.4.7/radattr.so
-/lib/pppd/2.4.7/radius.so
-/lib/pppd/2.4.7/radrealms.so
-/lib/pppd/2.4.7/winbind.so
-/share/man/man8/chat.8
-/share/man/man8/pppd-radattr.8
-/share/man/man8/pppd-radius.8
-/share/man/man8/pppd.8
-/share/man/man8/pppdump.8
-/share/man/man8/pppstats.8
 
 %files bin
 %defattr(-,root,root,-)
@@ -107,6 +99,54 @@ cp pppd/plugins/pppoatm/COPYING %{buildroot}/usr/share/package-licenses/ppp/pppd
 /usr/bin/pppdump
 /usr/bin/pppstats
 
+%files dev
+%defattr(-,root,root,-)
+/usr/include/pppd/ccp.h
+/usr/include/pppd/chap-new.h
+/usr/include/pppd/chap_ms.h
+/usr/include/pppd/eap.h
+/usr/include/pppd/ecp.h
+/usr/include/pppd/eui64.h
+/usr/include/pppd/fsm.h
+/usr/include/pppd/ipcp.h
+/usr/include/pppd/ipv6cp.h
+/usr/include/pppd/ipxcp.h
+/usr/include/pppd/lcp.h
+/usr/include/pppd/magic.h
+/usr/include/pppd/md4.h
+/usr/include/pppd/md5.h
+/usr/include/pppd/patchlevel.h
+/usr/include/pppd/pathnames.h
+/usr/include/pppd/pppcrypt.h
+/usr/include/pppd/pppd.h
+/usr/include/pppd/session.h
+/usr/include/pppd/sha1.h
+/usr/include/pppd/spinlock.h
+/usr/include/pppd/tdb.h
+/usr/include/pppd/upap.h
+
+%files lib
+%defattr(-,root,root,-)
+/usr/lib/pppd/2.4.7/minconn.so
+/usr/lib/pppd/2.4.7/openl2tp.so
+/usr/lib/pppd/2.4.7/passprompt.so
+/usr/lib/pppd/2.4.7/passwordfd.so
+/usr/lib/pppd/2.4.7/pppoatm.so
+/usr/lib/pppd/2.4.7/pppol2tp.so
+/usr/lib/pppd/2.4.7/radattr.so
+/usr/lib/pppd/2.4.7/radius.so
+/usr/lib/pppd/2.4.7/radrealms.so
+/usr/lib/pppd/2.4.7/winbind.so
+
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/ppp/pppd_plugins_pppoatm_COPYING
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man8/chat.8
+/usr/share/man/man8/pppd-radattr.8
+/usr/share/man/man8/pppd-radius.8
+/usr/share/man/man8/pppd.8
+/usr/share/man/man8/pppdump.8
+/usr/share/man/man8/pppstats.8
