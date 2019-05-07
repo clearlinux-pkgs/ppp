@@ -6,13 +6,13 @@
 #
 Name     : ppp
 Version  : 2.4.7
-Release  : 4
+Release  : 6
 URL      : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz
 Source0  : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz
 Source99 : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
-License  : LGPL-2.1
+License  : LGPL-2.1 RSA-MD
 Requires: ppp-bin = %{version}-%{release}
 Requires: ppp-lib = %{version}-%{release}
 Requires: ppp-license = %{version}-%{release}
@@ -27,7 +27,6 @@ serial lines.
 Summary: bin components for the ppp package.
 Group: Binaries
 Requires: ppp-license = %{version}-%{release}
-Requires: ppp-man = %{version}-%{release}
 
 %description bin
 bin components for the ppp package.
@@ -39,6 +38,7 @@ Group: Development
 Requires: ppp-lib = %{version}-%{release}
 Requires: ppp-bin = %{version}-%{release}
 Provides: ppp-devel = %{version}-%{release}
+Requires: ppp = %{version}-%{release}
 
 %description dev
 dev components for the ppp package.
@@ -78,16 +78,21 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1545244628
+export SOURCE_DATE_EPOCH=1557265971
+export LDFLAGS="${LDFLAGS} -fno-lto"
 %configure --disable-static
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1545244628
+export SOURCE_DATE_EPOCH=1557265971
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/ppp
 cp pppd/plugins/pppoatm/COPYING %{buildroot}/usr/share/package-licenses/ppp/pppd_plugins_pppoatm_COPYING
+cp pppd/plugins/radius/COPYRIGHT %{buildroot}/usr/share/package-licenses/ppp/pppd_plugins_radius_COPYRIGHT
 %make_install DESTDIR=%{buildroot}/usr
+## install_append content
+chmod 0755 %{buildroot}/usr/lib/pppd/2.4.7/*.so
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -141,6 +146,7 @@ cp pppd/plugins/pppoatm/COPYING %{buildroot}/usr/share/package-licenses/ppp/pppd
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/ppp/pppd_plugins_pppoatm_COPYING
+/usr/share/package-licenses/ppp/pppd_plugins_radius_COPYRIGHT
 
 %files man
 %defattr(0644,root,root,0755)
