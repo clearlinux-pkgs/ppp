@@ -6,10 +6,10 @@
 #
 Name     : ppp
 Version  : 2.4.7
-Release  : 6
+Release  : 7
 URL      : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz
 Source0  : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz
-Source99 : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz.asc
+Source1 : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : LGPL-2.1 RSA-MD
@@ -18,10 +18,16 @@ Requires: ppp-lib = %{version}-%{release}
 Requires: ppp-license = %{version}-%{release}
 Requires: ppp-man = %{version}-%{release}
 Patch1: triple-rot13.patch
+Patch2: 50a2997b256e0e0ef7a46fae133f56f60fce539c.patch
 
 %description
-Point-to-Point Protocol (PPP) to provide Internet connections over
-serial lines.
+PPPoL2TP plugin
+===============
+The pppol2tp plugin lets pppd use the Linux kernel driver pppol2tp.ko
+to pass PPP frames in L2TP tunnels. The driver was integrated into the
+kernel in the 2.6.23 release. For kernels before 2.6.23, an
+out-of-tree kernel module is available from the pppol2tp-kmod package
+in the OpenL2TP project.
 
 %package bin
 Summary: bin components for the ppp package.
@@ -38,6 +44,7 @@ Group: Development
 Requires: ppp-lib = %{version}-%{release}
 Requires: ppp-bin = %{version}-%{release}
 Provides: ppp-devel = %{version}-%{release}
+Requires: ppp = %{version}-%{release}
 Requires: ppp = %{version}-%{release}
 
 %description dev
@@ -72,19 +79,28 @@ man components for the ppp package.
 %prep
 %setup -q -n ppp-2.4.7
 %patch1 -p1
+%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1557265971
-export LDFLAGS="${LDFLAGS} -fno-lto"
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1568040615
+# -Werror is for werrorists
+export GCC_IGNORE_WERROR=1
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1557265971
+export SOURCE_DATE_EPOCH=1568040615
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/ppp
 cp pppd/plugins/pppoatm/COPYING %{buildroot}/usr/share/package-licenses/ppp/pppd_plugins_pppoatm_COPYING
@@ -102,6 +118,7 @@ chmod 0755 %{buildroot}/usr/lib/pppd/2.4.7/*.so
 /usr/bin/chat
 /usr/bin/pppd
 /usr/bin/pppdump
+/usr/bin/pppoe-discovery
 /usr/bin/pppstats
 
 %files dev
@@ -141,6 +158,7 @@ chmod 0755 %{buildroot}/usr/lib/pppd/2.4.7/*.so
 /usr/lib/pppd/2.4.7/radattr.so
 /usr/lib/pppd/2.4.7/radius.so
 /usr/lib/pppd/2.4.7/radrealms.so
+/usr/lib/pppd/2.4.7/rp-pppoe.so
 /usr/lib/pppd/2.4.7/winbind.so
 
 %files license
