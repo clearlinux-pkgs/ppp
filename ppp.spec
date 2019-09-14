@@ -6,7 +6,7 @@
 #
 Name     : ppp
 Version  : 2.4.7
-Release  : 7
+Release  : 8
 URL      : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz
 Source0  : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz
 Source1 : https://download.samba.org/pub/ppp/ppp-2.4.7.tar.gz.asc
