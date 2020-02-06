@@ -4,7 +4,7 @@
 #
 Name     : ppp
 Version  : 2.4.8
-Release  : 10
+Release  : 11
 URL      : https://github.com/paulusmack/ppp/archive/ppp-2.4.8.tar.gz
 Source0  : https://github.com/paulusmack/ppp/archive/ppp-2.4.8.tar.gz
 Summary  : No detailed summary available
@@ -16,6 +16,7 @@ Requires: ppp-license = %{version}-%{release}
 Requires: ppp-man = %{version}-%{release}
 BuildRequires : openssl-dev
 Patch1: triple-rot13.patch
+Patch2: CVE-2020-8597.patch
 
 %description
 Point-to-Point Protocol (PPP) to provide Internet connections over
@@ -71,26 +72,27 @@ man components for the ppp package.
 %setup -q -n ppp-ppp-2.4.8
 cd %{_builddir}/ppp-ppp-2.4.8
 %patch1 -p1
+%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1580948992
+export SOURCE_DATE_EPOCH=1580949247
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
 %configure --disable-static
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1580948992
+export SOURCE_DATE_EPOCH=1580949247
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/ppp
 cp %{_builddir}/ppp-ppp-2.4.8/pppd/plugins/pppoatm/COPYING %{buildroot}/usr/share/package-licenses/ppp/18bfbcc612f7daaeb150e2ef5dad0aec82b80b51
