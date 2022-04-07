@@ -1,8 +1,10 @@
---- ppp-2.4.7/pppd/pppcrypt.c~	2014-08-09 12:31:39.000000000 +0000
-+++ ppp-2.4.7/pppd/pppcrypt.c	2018-12-19 17:32:59.796578302 +0000
-@@ -113,16 +113,7 @@
- DesSetkey(key)
- u_char *key;
+diff --git a/pppd/pppcrypt.c b/pppd/pppcrypt.c
+index 193f8fd..b83ebce 100644
+--- a/pppd/pppcrypt.c
++++ b/pppd/pppcrypt.c
+@@ -106,44 +106,19 @@ Collapse(u_char *in, u_char *out)
+ bool
+ DesSetkey(u_char *key)
  {
 -	u_char des_key[8];
 -	u_char crypt_key[66];
@@ -18,9 +20,7 @@
  }
  
  bool
-@@ -130,15 +121,7 @@
- u_char *clear;	/* IN  8 octets */
- u_char *cipher;	/* OUT 8 octets */
+ DesEncrypt(u_char *clear, u_char *cipher)
  {
 -	u_char des_input[66];
 -
@@ -35,9 +35,7 @@
  }
  
  bool
-@@ -146,15 +129,7 @@
- u_char *cipher;	/* IN  8 octets */
- u_char *clear;	/* OUT 8 octets */
+ DesDecrypt(u_char *cipher, u_char *clear)
  {
 -	u_char des_input[66];
 -
