@@ -4,7 +4,7 @@
 #
 Name     : ppp
 Version  : 2.4.9
-Release  : 15
+Release  : 16
 URL      : https://github.com/paulusmack/ppp/archive/ppp-2.4.9/ppp-2.4.9.tar.gz
 Source0  : https://github.com/paulusmack/ppp/archive/ppp-2.4.9/ppp-2.4.9.tar.gz
 Summary  : No detailed summary available
