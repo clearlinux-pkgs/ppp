@@ -4,7 +4,7 @@
 #
 Name     : ppp
 Version  : 2.4.9
-Release  : 16
+Release  : 17
 URL      : https://github.com/paulusmack/ppp/archive/ppp-2.4.9/ppp-2.4.9.tar.gz
 Source0  : https://github.com/paulusmack/ppp/archive/ppp-2.4.9/ppp-2.4.9.tar.gz
 Summary  : No detailed summary available
@@ -78,24 +78,24 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1649351024
+export SOURCE_DATE_EPOCH=1664915971
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 %configure --disable-static
 make  %{?_smp_mflags}  COPTS="$CFLAGS"
 
 %install
-export SOURCE_DATE_EPOCH=1649351024
+export SOURCE_DATE_EPOCH=1664915971
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/ppp
-cp %{_builddir}/ppp-ppp-2.4.9/pppd/plugins/pppoatm/COPYING %{buildroot}/usr/share/package-licenses/ppp/18bfbcc612f7daaeb150e2ef5dad0aec82b80b51
-cp %{_builddir}/ppp-ppp-2.4.9/pppd/plugins/radius/COPYRIGHT %{buildroot}/usr/share/package-licenses/ppp/b98c076b7b97562c420880d0d45ec541b7410f9f
+cp %{_builddir}/ppp-ppp-%{version}/pppd/plugins/pppoatm/COPYING %{buildroot}/usr/share/package-licenses/ppp/18bfbcc612f7daaeb150e2ef5dad0aec82b80b51 || :
+cp %{_builddir}/ppp-ppp-%{version}/pppd/plugins/radius/COPYRIGHT %{buildroot}/usr/share/package-licenses/ppp/b98c076b7b97562c420880d0d45ec541b7410f9f || :
 %make_install DESTDIR=%{buildroot}/usr
 ## install_append content
 chmod -v 0755 %{buildroot}/usr/lib/pppd/*/*.so
