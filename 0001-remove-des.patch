@@ -1,0 +1,78 @@
+From d9e60ab04236395b326bb4003af4d0075ee45161 Mon Sep 17 00:00:00 2001
+From: William Douglas <william.douglas@intel.com>
+Date: Thu, 3 Aug 2023 15:19:12 -0700
+Subject: [PATCH] remove des
+
+---
+ pppd/crypto_ms.c | 50 ++----------------------------------------------
+ 1 file changed, 2 insertions(+), 48 deletions(-)
+
+diff --git a/pppd/crypto_ms.c b/pppd/crypto_ms.c
+index a9ddd5f..9d385d1 100644
+--- a/pppd/crypto_ms.c
++++ b/pppd/crypto_ms.c
+@@ -127,59 +127,13 @@ MakeKey(const unsigned char *key, unsigned char *des_key)
+ int
+ DesEncrypt(const unsigned char *clear, const unsigned char *key, unsigned char *cipher)
+ {
+-    int retval = 0;
+-    unsigned int clen = 0;
+-    unsigned char des_key[8];
+-
+-    PPP_CIPHER_CTX *ctx = PPP_CIPHER_CTX_new();
+-    if (ctx) {
+-
+-        MakeKey(key, des_key);
+-        
+-        if (PPP_CipherInit(ctx, PPP_des_ecb(), des_key, NULL, 1)) {
+-
+-            if (PPP_CipherUpdate(ctx, cipher, &clen, clear, 8)) {
+-
+-                if (PPP_CipherFinal(ctx, cipher + clen, &clen)) {
+-
+-                    retval = 1;
+-                }
+-            }
+-        }
+-        
+-        PPP_CIPHER_CTX_free(ctx);
+-    }
+-
+-	return (retval);
++    return 1;
+ }
+ 
+ int
+ DesDecrypt(const unsigned char *cipher, const unsigned char *key, unsigned char *clear)
+ {
+-    int retval = 0;
+-    unsigned int clen = 0;
+-    unsigned char des_key[8];
+-
+-    PPP_CIPHER_CTX *ctx = PPP_CIPHER_CTX_new();
+-    if (ctx) {
+-
+-        MakeKey(key, des_key);
+-        
+-        if (PPP_CipherInit(ctx, PPP_des_ecb(), des_key, NULL, 0)) {
+-
+-            if (PPP_CipherUpdate(ctx, clear, &clen, cipher, 8)) {
+-
+-                if (PPP_CipherFinal(ctx, clear + clen, &clen)) {
+-
+-                    retval = 1;
+-                }
+-            }
+-        }
+-        
+-        PPP_CIPHER_CTX_free(ctx);
+-    }
+-
+-	return (retval);
++    return 1;
+ }
+ 
+ #ifdef UNIT_TEST_MSCRYPTO
+-- 
+2.41.0
+

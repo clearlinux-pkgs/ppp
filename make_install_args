@@ -1,1 +1,1 @@
-DESTDIR=%{buildroot}/usr
+DESTDIR=%{buildroot}

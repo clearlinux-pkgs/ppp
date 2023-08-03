@@ -1,1 +1,0 @@
-chmod -v 0755 %{buildroot}/usr/lib/pppd/*/*.so

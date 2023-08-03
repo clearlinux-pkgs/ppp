@@ -1,5 +1,5 @@
 PKG_NAME := ppp
-URL = https://github.com/paulusmack/ppp/archive/ppp-2.4.9/ppp-2.4.9.tar.gz
+URL = https://github.com/ppp-project/ppp/archive/refs/tags/ppp-2.5.0.tar.gz
 ARCHIVES = 
 
 include ../common/Makefile.common
